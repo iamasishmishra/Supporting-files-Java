@@ -1,0 +1,97 @@
+pom.xml
+--------
+<dependencies>
+	  <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+	<dependency>
+    	<groupId>org.hibernate</groupId>
+    	<artifactId>hibernate-core</artifactId>
+    	<version>5.6.15.Final</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	<dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+    	<version>8.0.28</version>
+	</dependency>
+
+</dependencies>
+
+
+
+employee.hbm.xml     (src/main/resources/employee.hbm.xml)
+-----------------
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="test.Employee" table="employee">
+		<id name="id" column="id">
+			<generator class="identity"/>
+		</id>
+		
+		<property name="name" column="name" not-null="true"></property>
+		<property name="desg" column="desg" not-null="true"></property>
+		<property name="phone" column="phone" not-null="true" unique="true"></property>
+		<property name="salary" column="salary" not-null="true"></property>
+		<property name="password" column="password" not-null="true"></property>
+	</class>
+</hibernate-mapping>
+
+
+
+hibernate.cfg.xml     (src/main/resources/hibernate.cfg.xml)
+-----------------
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+        
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hib_db?createDatabaseIfNotExist=true</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">Asishk@123</property>
+        
+        <property name="hbm2ddl.auto">update</property>
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+		<mapping resource="employee.hbm.xml"/>
+		<mapping class="test.User"/>
+	</session-factory>
+</hibernate-configuration>
+
+
+
+
+demo.java      (src/main/java/demo.java)
+-----------
+package test;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class DemoClass {
+
+	public static void main(String[] args) {
+		Configuration cfg = new Configuration();
+		
+		cfg.configure();
+		SessionFactory factory = cfg.buildSessionFactory();
+		System.out.println(factory);
+	}
+
+}
+
+
+
+
+
+
+
+
+
